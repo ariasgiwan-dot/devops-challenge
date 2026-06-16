@@ -14,7 +14,7 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: testcreateread
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
@@ -22,9 +22,7 @@ jobs:
         with:
           context: ./app
           push: true
-          tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/devops-challenge:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/devops-challenge:${{ github.sha }}
+          tags: testcreateread/devops-challenge:latest
 
   deploy:
     runs-on: self-hosted
@@ -35,8 +33,8 @@ jobs:
 
       - name: Pull and load image into Kind
         run: |
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/devops-challenge:latest
-          kind load docker-image ${{ secrets.DOCKERHUB_USERNAME }}/devops-challenge:latest --name devops-challenge
+          docker pull testcreateread/devops-challenge:latest
+          kind load docker-image testcreateread/devops-challenge:latest --name devops-challenge
 
       - name: Deploy to Kubernetes
         run: |
@@ -48,7 +46,7 @@ jobs:
       - name: Update image
         run: |
           kubectl set image deployment/backend \
-            backend=${{ secrets.DOCKERHUB_USERNAME }}/devops-challenge:latest \
+            backend=testcreateread/devops-challenge:latest \
             -n devops-challenge
 
       - name: Wait for rollout

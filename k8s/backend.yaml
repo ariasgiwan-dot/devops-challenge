@@ -22,7 +22,8 @@ spec:
     spec:
       containers:
         - name: backend
-          image: YOUR_DOCKERHUB_USERNAME/devops-challenge:latest
+          image: testcreateread/devops-challenge:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:
